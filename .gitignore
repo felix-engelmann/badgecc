@@ -1,0 +1,9 @@
+media/
+db*
+
+# python
+__pycache__/
+*.py[cod]
+
+#Mac
+.DS_Store

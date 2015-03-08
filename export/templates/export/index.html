@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		<form method="post">
+		{% csrf_token %}
+		<div class="panel panel-default">
+			
+			<div class="panel-heading">
+				<h3 class="panel-title">Personen <input type="submit" value="drucken" /> </h3>
+			</div> 
+			
+				
+			<table class="table">
+				<tr>
+					<th>Druck</th>
+					<th></th>
+					<th>Name</th>
+					<th>Stand</th>
+					<th>Rolle</th>
+					<th>Rechte</th>
+				</tr>
+    {% for p in person %}
+        <tr>
+			<td><input type="checkbox" name="print" value="{{p.id}}" checked /></td>
+			<td style="background-image:url(/media/{{ p.department.background }});"><img height="30px" src="/media/{{ p.image }}" /></td>
+			<td>{{ p.name }}</td>
+			<td>{{ p.department }}</td>
+			<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
+			<td>{{ p.calc_rights|join:", " }}</td>
+		</tr>
+    {% endfor %}
+			</table>
+		</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

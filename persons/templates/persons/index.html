@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Rechte</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Name</th>
+				</tr>
+    {% for r in right %}
+        <tr><td>{{ r.name }}</td></tr>
+    {% endfor %}
+			</table>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Rollen</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Name</th>
+					<th>Rechte</th>
+				</tr>
+    {% for r in role %}
+        <tr>
+			<td>{{ r.name }}</td>
+			<td>{{ r.rights.all|join:", " }}</td>
+		</tr>
+    {% endfor %}
+			</table>
+		</div>
+			
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Stände</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Name</th>
+					<th>Hintergrund</th>
+					<th>Rechte</th>
+				</tr>
+    {% for r in department %}
+        <tr>
+			<td>{{ r.name }}</td>
+			<td><img height="35px" src="/media/{{ r.background }}" /></td>
+			<td>{{ r.rights.all|join:", " }}</td>
+		</tr>
+    {% endfor %}
+			</table>
+		</div>
+		
+	</div>
+	<div class="col-md-7">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Personen</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Stand</th>
+					<th>Rolle</th>
+					<th>Rechte</th>
+				</tr>
+    {% for p in person %}
+        <tr>
+			<td style="background-image:url(/media/{{ p.department.background }});"><img height="30px" src="/media/{{ p.image }}" /></td>
+			<td>{{ p.name }}</td>
+			<td>{{ p.department }}</td>
+			<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
+			<td>{{ p.calc_rights|join:", " }}</td>
+		</tr>
+    {% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
