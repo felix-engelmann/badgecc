@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		<form method="post" action="{% url 'parser:upload'  %}">
+		{% csrf_token %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Bilder zuordnung</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th></th>
+					<th>Bildername</th>
+					<th>Name</th>
+				</tr>
+				{% for p in images %}
+			        <tr>
+						<td><img height="50px" src="/media/{{ p.image }}" /></td>
+						<td>{{ p.original }}</td>
+						<td>
+							<select name="img|{{ p.id }}">
+								<option value="-1" {% if not p.possible in ap %}
+									selected="selected"
+								{% endif %}>--</option>
+								{% for ap in persons %}
+										<option value="{{ap.id}}" {% if p.possible == ap %} selected="selected" {% endif %}
+										>{{ ap }}</option>
+								{% endfor %}
+							</select></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <input type="submit" value="einfügen" />
+		  </div>
+		</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

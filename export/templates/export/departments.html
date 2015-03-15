@@ -4,12 +4,14 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<form method="post">
+		{% for d in departments %}
+		<form method="post" action="?id={{ d.id }}">
 		{% csrf_token %}
+		
 		<div class="panel panel-default">
 			
 			<div class="panel-heading">
-				<h3 class="panel-title">Personen <input type="submit" value="drucken" /> </h3>
+				<h3 class="panel-title">{{ d.name }} <input type="submit" value="drucken" /> </h3>
 			</div> 
 			
 				
@@ -22,14 +24,14 @@
 					<th>Rolle</th>
 					<th>Rechte</th>
 				</tr>
-    {% for p in person %}
+    {% for p in d.persons %}
         <tr>
 			<td><input type="checkbox" name="print" value="{{p.id}}" checked /></td>
-			<td style="background-image:url(/media/{{ p.department.background }}); background-size:35px;">
+			<td style="background-image:url(/media/{{ d.background }}); background-size:35px;">
 				{% if p.image %}
 					<img height="30px" src="/media/{{ p.image }}" />
 				{% elif p.department.default_image %}
-					<img height="30px" src="/media/{{ p.department.default_image }}" />
+					<img height="30px" src="/media/{{ d.default_image }}" />
 				{% endif %}
 			</td>
 			<td>{{ p.firstname }} {{ p.lastname }}</td>
@@ -41,6 +43,7 @@
 			</table>
 		</div>
 		</form>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}

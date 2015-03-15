@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		{% if warnings %}
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h3 class="panel-title">Namen ohne FS, Rolle oder Email</h3>
+			</div>
+			<div class="panel-body">
+				{{ warnings|join:", " }}
+			</div>
+		</div>
+		{% endif %}
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">Updates</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Vorname</th>
+					<th>Name</th>
+					<th>Rolle</th>
+					<th>Stand</th>
+				</tr>
+				{% for p in fail_update %}
+			        <tr>
+						<td>{{ p.firstname }}</td>
+						<td>{{ p.lastname }}</td>
+						<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}<br />{% if p.old_role %}{{ p.old_role }}{% else %}--{% endif %}</td>
+						<td>{{ p.department }}<br />old:{{ p.old_department }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<form method="post" action="{% url 'parser:insert'  %}">
+		{% csrf_token %}
+		{% for k,d in data.items %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ k }}</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>import</th>
+					<th>Vorname</th>
+					<th>Name</th>
+					<th>Rolle</th>
+				</tr>
+				{% for p in d %}
+			        <tr>
+						<td><input type="checkbox" name="insert" value="{{p.id}}" {% if p.guess_role %}checked{% endif %} />{{ p.id }}</td>
+						<td>{{ p.firstname }}</td>
+						<td>{{ p.lastname }}</td>
+						<td>{% if p.guess_role %}{% if not p.role %} -- {% else %}{{ p.role }}{% endif %}{% elif p.role %}{{ p.role }}{% else %}--{% endif %}</td>
+					</tr>
+				{% empty %}
+				{% endfor %}
+			</table>
+		</div>
+		{% endfor %}
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <input type="submit" value="einfügen" />
+		  </div>
+		</div>
+		</form>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Ohne Update</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Vorname</th>
+					<th>Name</th>
+					<th>Rolle</th>
+					<th>Stand</th>
+				</tr>
+				{% for p in warn_double %}
+			        <tr>
+						<td>{{ p.firstname }}</td>
+						<td>{{ p.lastname }}</td>
+						<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
+						<td>{{ p.department }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

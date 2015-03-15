@@ -49,7 +49,8 @@
     {% for r in department %}
         <tr>
 			<td>{{ r.name }}</td>
-			<td><img height="35px" src="/media/{{ r.background }}" /></td>
+			<td><img height="35px" src="/media/{{ r.background }}" />
+				{% if r.default_image %}<img height="35px" src="/media/{{ r.default_image }}" />{% endif %}</td>
 			<td>{{ r.rights.all|join:", " }}</td>
 		</tr>
     {% endfor %}
@@ -72,8 +73,14 @@
 				</tr>
     {% for p in person %}
         <tr>
-			<td style="background-image:url(/media/{{ p.department.background }});"><img height="30px" src="/media/{{ p.image }}" /></td>
-			<td>{{ p.name }}</td>
+			<td style="background-image:url(/media/{{ p.department.background }});background-size: 35px;">
+				{% if p.image %}
+					<img height="30px" src="/media/{{ p.image }}" />
+				{% elif p.department.default_image %}
+					<img height="30px" src="/media/{{ p.department.default_image }}" />
+				{% endif %}
+			</td>
+			<td>{{ p.firstname }} {{ p.lastname }}</td>
 			<td>{{ p.department }}</td>
 			<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
 			<td>{{ p.calc_rights|join:", " }}</td>

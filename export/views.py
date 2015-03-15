@@ -67,11 +67,9 @@ def _make_sheet(front,back):
     sheet+="\\newpage\n"
     
     return sheet
-
-def index(request):
     
-    persons = Person.objects.all()
-
+def texit(persons):
+    
     for p in persons:
         r=set(p.extra_rights.all())
         r=r|set(p.department.rights.all())
@@ -79,42 +77,79 @@ def index(request):
             r=r|set(p.role.rights.all())
         p.calc_rights=list(r)
     
-    if request.method == 'POST':
+    #sheet layout in cm
+    badge_height=6
+    badge_width=9.5
+    #count of badges
+    badge_rows=4
+    badge_cols=2
     
-        for p_id in request.POST.getlist('print'):
-            pass
-            #print(render_to_string("export/tex/front.tex",{'firstname':"felix"}))
-        
-        #sheet layout in cm
-        badge_height=6
-        badge_width=9.5
-        #count of badges
-        badge_rows=4
-        badge_cols=2
-        
-        document=""
+    document=""
+
+    evenpage=""
+    oddpage=""
+
+    for idx,person in enumerate(persons):
+        evenpage+=render_to_string("export/tex/front.tex",{'x':(idx%badge_cols)*badge_width,'y':floor((idx%(badge_cols*badge_rows))/badge_cols)*badge_height,'person':person})
+        oddpage+=render_to_string("export/tex/back.tex",{'x':badge_width-(idx%badge_cols)*badge_width,'y':floor((idx%(badge_cols*badge_rows))/badge_cols)*badge_height,'person':person})
     
-        evenpage=""
-        oddpage=""
-    
-        for idx,person in enumerate(persons):
-            evenpage+=render_to_string("export/tex/front.tex",{'x':(idx%badge_cols)*badge_width,'y':floor((idx%(badge_cols*badge_rows))/badge_cols)*badge_height,'person':person})
-            oddpage+=render_to_string("export/tex/back.tex",{'x':badge_width-(idx%badge_cols)*badge_width,'y':floor((idx%(badge_cols*badge_rows))/badge_cols)*badge_height,'person':person})
-        
-            if idx%(badge_cols*badge_rows)==7:
-                document+=_make_sheet(evenpage,oddpage)
-            
-                evenpage=""
-                oddpage=""
-    
-        if evenpage!="":
+        if idx%(badge_cols*badge_rows)==7:
             document+=_make_sheet(evenpage,oddpage)
-          
-        #return document
         
+            evenpage=""
+            oddpage=""
+
+    if evenpage!="":
+        document+=_make_sheet(evenpage,oddpage)
+      
+    #return document
+    
+    
+    return _render_tex(render_to_string("export/tex/wrapper.tex", {'content':document}))
+
+def index(request):
+    
+    if request.method == 'POST':
         
-        return _render_tex(render_to_string("export/tex/wrapper.tex", {'content':document}))
+        persons = Person.objects.filter(id__in=request.POST.getlist('print')).order_by("department")
+        
+        return texit(persons)
     
     else:
+        
+        persons = Person.objects.order_by("department")
+
+        for p in persons:
+            r=set(p.extra_rights.all())
+            r=r|set(p.department.rights.all())
+            if(p.role):
+                r=r|set(p.role.rights.all())
+            p.calc_rights=list(r)
     
         return render(request, "export/index.html", {'person':persons})
+
+def dep(request):
+    
+    if request.method == 'POST':
+        
+        persons = Person.objects.filter(id__in=request.POST.getlist('print')).order_by("department")
+        
+        #print(persons)
+        #print(request.GET['id'])
+        
+        return texit(persons)
+        #return render(request, "export/departments.html", {'departments':None})
+    else:
+        
+        departments = Department.objects.order_by("name")
+        
+        for d in departments:
+            d.persons = Person.objects.filter(department=d)
+            for p in d.persons:
+                r=set(p.extra_rights.all())
+                r=r|set(p.department.rights.all())
+                if(p.role):
+                    r=r|set(p.role.rights.all())
+                p.calc_rights=list(r)
+    
+        return render(request, "export/departments.html", {'departments':departments})

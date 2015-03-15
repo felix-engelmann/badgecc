@@ -3,7 +3,15 @@
 	    	<div class="col-md-12">
 				<span class="navbar-brand">unity | badge tool</span>
 				<ul class="nav navbar-nav">
-					<li><a href="{% url 'parser:index' %}">Import</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Import<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="{% url 'parser:index' %}">xlsx Daten</a></li>
+							<li><a href="{% url 'parser:images' %}">Bilder</a></li>
+							<li class="divider"></li>
+							<li><a href="{% url 'parser:manual' %}">Menuell</a></li>
+						</ul>
+					</li>
 					<li><a href="{% url 'persons:index' %}">Personen</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Export <span class="caret"></span></a>
@@ -11,7 +19,7 @@
 							<li><a href="#">Updates</a></li>
 							<li class="divider"></li>
 							<li><a href="{% url 'export:index' %}">Individual</a></li>
-							<li><a href="#">Stand</a></li>
+							<li><a href="{% url 'export:department' %}">Stand</a></li>
 							<li><a href="#">Rolle</a></li>
 							<li class="divider"></li>
 							<li><a href="#">Freie Felder</a></li>

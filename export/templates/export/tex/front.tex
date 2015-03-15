@@ -1,9 +1,14 @@
-
+{% load tex %}
 \begin{scope}[shift={({{ x }},{{ y }})}]
-	\node[anchor=south west,inner sep=0] at (-0.15,-0.12){\includegraphics[width=9.3cm]{media/{{ person.department.background }}}}; 
-	\node[anchor=south east,inner sep=0] at (8.7,0.3){\includegraphics[width=4cm]{media/{{ person.image }}}};
-	\node[right] at (0.5,3.5) {\color{white}\Huge {{ person.name }}};
-	\node[right] at (0.5,4.5) {\color{white}\Huge Ackermann,};
-	\node[right] at (0.5,2.5) {\color{white}\Large Helferfest};
-	\node[right] at (0.5,1.9) {\color{white}\Large Standleiter};
+	\node[anchor=south west,inner sep=0] at (-0.15,-0.12){\includegraphics[width=9.3cm]{media/{{ person.department.background }}}};
+	{% if person.image %}
+		\node[anchor=south east,inner sep=0] at (8.7,0.3){\includegraphics[width=4cm]{media/{{ person.image }}}};
+	{% elif person.department.default_image %}
+		\node[anchor=south east,inner sep=0] at (8.7,0.3){\includegraphics[width=4cm]{media/{{ person.department.default_image }}}};
+	{% endif %}
+	\node[right] at (0.5,3.5) {\color{{ person.department.color|brackets }}\Huge {{ person.firstname }}};
+	\node[right] at (0.5,4.5) {\color{{ person.department.color|brackets }}\Huge {{ person.lastname }}};
+	\node[right] at (0.5,2.5) {\color{{ person.department.color|brackets }}\Large {{ person.department }} };
+	\node[right] at (0.5,1.9) {\color{{ person.department.color|brackets }}\Large {{ person.role }} };
 \end{scope}
+ {# person.department.color #} 

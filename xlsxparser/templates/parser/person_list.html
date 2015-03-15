@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Importierte</h3>
+			</div>
+			<table class="table">
+				<tr>
+					<th>Vorname</th>
+					<th>Name</th>
+					<th>Rolle</th>
+					<th>Stand</th>
+				</tr>
+				{% for p in persons %}
+			        <tr>
+						<td>{{ p.firstname }}</td>
+						<td>{{ p.lastname }}</td>
+						<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
+						<td>{{ p.department }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
