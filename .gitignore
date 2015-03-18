@@ -1,9 +1,15 @@
 media/
 db*
 
+static/fonts/
+
 # python
 __pycache__/
 *.py[cod]
+
+*.xlsx
+
+*.css.map
 
 #Mac
 .DS_Store

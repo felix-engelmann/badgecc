@@ -6,7 +6,7 @@ from django.conf import settings
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'badges.views.home', name='home'),
-    
+    url(r'^$', include('persons.urls', namespace="persons")),
     url(r'^persons/', include('persons.urls', namespace="persons")),
     url(r'^export/', include('export.urls', namespace="export")),
     url(r'^parser/', include('xlsxparser.urls', namespace="parser")),

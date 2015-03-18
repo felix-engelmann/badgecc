@@ -71,6 +71,8 @@ def _make_sheet(front,back):
 def texit(persons):
     
     for p in persons:
+        p.printed = True;
+        p.save()
         r=set(p.extra_rights.all())
         r=r|set(p.department.rights.all())
         if(p.role):
@@ -128,6 +130,27 @@ def index(request):
     
         return render(request, "export/index.html", {'person':persons})
 
+def update(request):
+    
+    if request.method == 'POST':
+        
+        persons = Person.objects.filter(id__in=request.POST.getlist('print')).order_by("department")
+        
+        return texit(persons)
+    
+    else:
+        
+        persons = Person.objects.order_by("department")
+
+        for p in persons:
+            r=set(p.extra_rights.all())
+            r=r|set(p.department.rights.all())
+            if(p.role):
+                r=r|set(p.role.rights.all())
+            p.calc_rights=list(r)
+    
+        return render(request, "export/updates.html", {'person':persons})
+
 def dep(request):
     
     if request.method == 'POST':
@@ -153,3 +176,4 @@ def dep(request):
                 p.calc_rights=list(r)
     
         return render(request, "export/departments.html", {'departments':departments})
+

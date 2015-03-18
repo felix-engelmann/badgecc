@@ -67,6 +67,7 @@
 				<tr>
 					<th></th>
 					<th>Name</th>
+					<th></th>
 					<th>Stand</th>
 					<th>Rolle</th>
 					<th>Rechte</th>
@@ -80,7 +81,8 @@
 					<img height="30px" src="/media/{{ p.department.default_image }}" />
 				{% endif %}
 			</td>
-			<td>{{ p.firstname }} {{ p.lastname }}</td>
+			<td><a href="/persons/detail/{{ p.id }}">{{ p.firstname }} {{ p.lastname }}</a></td>
+			<td>{% if p.printed %}<span class="glyphicon glyphicon-print"></span>{% endif %}</td>
 			<td>{{ p.department }}</td>
 			<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
 			<td>{{ p.calc_rights|join:", " }}</td>
