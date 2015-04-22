@@ -158,6 +158,8 @@ def images(request):
             
             m.possible = person
             
+            m.save()
+            
             imgs.append(m)
             
         return render(request,"parser/image_select.html",{"images":imgs,"persons":Person.objects.order_by("lastname")})
