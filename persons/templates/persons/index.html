@@ -59,10 +59,14 @@
 		
 	</div>
 	<div class="col-md-7">
+		<form action="/persons/delete/" method="post">
+		{% csrf_token %}
 		<div class="panel panel-default">
+			
 			<div class="panel-heading">
-				<h3 class="panel-title">Personen</h3>
+				<h3 class="panel-title">Personen <input type="submit" value="markierte löschen" /></h3>
 			</div>
+			
 			<table class="table">
 				<tr>
 					<th></th>
@@ -81,7 +85,7 @@
 					<img height="30px" src="/media/{{ p.department.default_image }}" />
 				{% endif %}
 			</td>
-			<td><a href="/persons/detail/{{ p.id }}">{{ p.firstname }} {{ p.lastname }}</a></td>
+			<td><input type="checkbox" name="print" value="{{p.id}}" /> <a href="/persons/detail/{{ p.id }}">{{ p.firstname }} {{ p.lastname }}</a></td>
 			<td>{% if p.printed %}<span class="glyphicon glyphicon-print"></span>{% endif %}</td>
 			<td>{{ p.department }}</td>
 			<td>{% if p.role %}{{ p.role }}{% else %}--{% endif %}</td>
@@ -89,7 +93,9 @@
 		</tr>
     {% endfor %}
 			</table>
+			
 		</div>
+		</form>
 	</div>
 </div>
 {% endblock %}

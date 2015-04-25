@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views import generic
 
@@ -35,6 +35,15 @@ def detail(request, id):
         p.calc_rights=list(r)
     
     return render(request, "persons/index.html", {'right': right, 'role': role, 'department':dep, 'person': pers})
+    
+def delete(request):
+    if request.method == 'POST':
+        
+        persons = Person.objects.filter(id__in=request.POST.getlist('print')).delete()
+        
+        return redirect('/persons/')
+    
+    return redirect('/persons/')
     
 class IndexView(generic.ListView):
     #template_name = 'persons/index.html'
