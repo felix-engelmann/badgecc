@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 Django filters, needed when creating LaTeX files with the django template language
+courtesy of https://gist.github.com/schocco/1530739
 '''
 from django.template.defaultfilters import stringfilter, register
 from django.template.loader import render_to_string
