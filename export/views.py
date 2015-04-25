@@ -77,7 +77,11 @@ def texit(persons):
         r=r|set(p.department.rights.all())
         if(p.role):
             r=r|set(p.role.rights.all())
-        p.calc_rights=list(r)
+        rslug=[]
+        for ro in list(r):
+            rslug.append(ro.slug)
+        print(rslug)
+        p.calc_rights=list(rslug)
     
     #sheet layout in cm
     badge_height=6

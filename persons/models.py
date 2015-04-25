@@ -5,6 +5,7 @@ from django.db import models
 class Right(models.Model):
 
     name = models.CharField(max_length=20)
+    slug = models.SlugField()
 
     def __str__(self):
         return '{}'.format(self.name)

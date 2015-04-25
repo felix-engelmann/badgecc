@@ -1,9 +1,14 @@
 \begin{scope}[shift={({{ x }},{{ y }})}]
 
-\node[anchor=south west,inner sep=0] at (-0.15,-0.12){\includegraphics[width=9.3cm]{media/{{ person.department.background }}}}; 
+\node[anchor=south west,inner sep=0] at (-0.15,-0.12){\includegraphics[width=9.3cm]{media/{{ person.department.background }}}};
+
 \node[align=center,below] at (1.85,1.0) {\color{white}\footnotesize Finanz Zone};
-\node[align=center,below] at (3.7,1.0) {\color{white}\footnotesize Orga Zone};
-\node[align=center,below] at (3.7,3.5) {\color{white}\footnotesize Backstage};
+{% if 'orga' in person.calc_rights %}
+	\node[align=center,below] at (3.7,1.0) {\color{white}\footnotesize Orga Zone};
+{% endif %}
+{% if "backstage" in person.calc_rights %}
+	\node[align=center,below] at (3.7,3.5) {\color{white}\footnotesize Backstage};
+{% endif %}
 \node[align=center,below] at (1.85,3.5) {\color{white}\footnotesize freie\\[-0.1cm] \footnotesize\color{white} Verpflegung};
 %\node[align=center] at (1.85,1.8) {\color{white}\includegraphics[width=1.5cm]{priv/not_finanz.pdf}};
 %\node[align=center] at (3.7,1.8) {\color{white}\includegraphics[width=1.5cm]{priv/not_orga.pdf}};
