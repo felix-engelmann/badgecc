@@ -9,6 +9,10 @@
 	\node[right] at (0.5,3.5) {\color{{ person.department.color|brackets }}\Huge {{ person.firstname }}};
 	\node[right] at (0.5,4.5) {\color{{ person.department.color|brackets }}\Huge {{ person.lastname }}};
 	\node[right] at (0.5,2.5) {\color{{ person.department.color|brackets }}\Large {{ person.department }} };
-	\node[right] at (0.5,1.9) {\color{{ person.department.color|brackets }}\Large {{ person.role }} };
+	{% if person.role %}
+		\node[right] at (0.5,1.9) {\color{{ person.department.color|brackets }}\Large {{ person.role }} };
+	{% else %}
+		\node[right] at (0.5,1.9) {\color{{ person.department.color|brackets }}\Large Helfer };
+	{% endif %}
 \end{scope}
  {# person.department.color #} 
